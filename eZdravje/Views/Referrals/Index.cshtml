@@ -1,37 +1,38 @@
-﻿@model IEnumerable<eZdravje.Models.Prescription>
+﻿@model IEnumerable<eZdravje.Models.Referral>
 
 @{
-    ViewData["Title"] = "Vsi recepti";
+    ViewData["Title"] = "Vse napotnice";
 }
 
-<h1>Recepti</h1>
+<h1>Napotnice</h1>
 
 <p>
-    <a asp-action="Create">Dodaj recept</a>
+    <a asp-action="Create">Dodaj napotnico</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>ID napotnice</th>
             <th>
-                ID recepta
-            </th>
-            <th>
-                Naziv recepta
+                Naziv napotnice
             </th>
             <th>
                 Opis
             </th>
             <th>
-                Brez doplačila (zeleni recept)
+                Kategorija (1 - redno, 2 - hitro, 3 - nujno)
             </th>
             <th>
-                Porabljen
+                Porabljeno
             </th>
             <th>
-                Zdravnik
+                Zdravnik, ki izdaja napotnico
             </th>
             <th>
                 Pacient
+            </th>
+            <th>
+                Namenjenu specialistu
             </th>
             <th></th>
         </tr>
@@ -49,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Free)
+                @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsUsed)
@@ -59,10 +60,14 @@
                 @Html.DisplayFor(modelItem => item.Specialist.LastName)
                 <br />
                 @Html.DisplayFor(modelItem => item.Specialist.Street)
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Patient.Name)
                 @Html.DisplayFor(modelItem => item.Patient.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecialistCategory.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |

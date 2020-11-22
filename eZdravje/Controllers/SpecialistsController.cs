@@ -82,7 +82,7 @@ namespace eZdravje.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Id", specialist.SpecialistCategoryId);
+            ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name", specialist.SpecialistCategoryId);
             return View(specialist);
         }
 

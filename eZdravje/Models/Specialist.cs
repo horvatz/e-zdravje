@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace eZdravje.Models
 {
+    
     public class Specialist
     {
         public int Id { get; set; }
@@ -22,4 +23,7 @@ namespace eZdravje.Models
         public virtual ICollection<Prescription> Prescriptions { get; set; }
         public virtual ICollection<Referral> Referrals { get; set; }
     }
+
 }
+
+

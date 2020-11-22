@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<eZdravje.Models.Specialist>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vsi zdravniki";
 }
 
 <h1>Seznam zdravnikov</h1>
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Ime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                Priimek
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Street)
+                Naslov
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PostalCode)
+                Poštna številka
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                Naselje
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SpecialistCategory.Name)
+                Specializacija
             </th>
             <th></th>
         </tr>

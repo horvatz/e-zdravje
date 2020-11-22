@@ -1,54 +1,60 @@
 ﻿@model eZdravje.Models.Prescription
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Podrobnosti o receptu";
 }
 
-<h1>Details</h1>
+<h1>O receptu</h1>
 
 <div>
-    <h4>Prescription</h4>
+    <h4>Št recepta: @Html.Raw(Model.Id)</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            ID recepta
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Naziv recepta
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Opis
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Free)
+            Brez doplačila (zeleni recept)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Free)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUsed)
+            Porabljen
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsUsed)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient.Name)
+            Zdravnik, ki predpisuje
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Patient.Name)
+            @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
+        </dd>
+        <dt class="col-sm-2">
+            Pacient
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Uredi</a> |
+    <a asp-action="Index">Nazaj na seznam</a>
 </div>

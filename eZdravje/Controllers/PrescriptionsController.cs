@@ -24,6 +24,7 @@ namespace eZdravje.Controllers
         {
             var prescriptions = _context.Prescriptions
             .Include(c => c.Patient)
+            .Include(s => s.Specialist)
             .AsNoTracking();
             return View(await prescriptions.ToListAsync());
             //return View(await _context.Prescriptions.ToListAsync());
@@ -39,6 +40,7 @@ namespace eZdravje.Controllers
 
             var prescription = await _context.Prescriptions
                 .Include(p => p.Patient)
+                .Include(c => c.Specialist)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -54,6 +56,14 @@ namespace eZdravje.Controllers
         public IActionResult Create()
         {
             PopulatePatientsDropDownList();
+            var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
+                })
+                .ToList();
+            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
             return View();
         }
 
@@ -62,7 +72,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Free,IsUsed,PatientId")] Prescription prescription)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Free,IsUsed,PatientId,SpecialistId")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -71,6 +81,7 @@ namespace eZdravje.Controllers
                 return RedirectToAction(nameof(Index));
             }
             PopulatePatientsDropDownList(prescription.PatientId);
+            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", prescription.SpecialistId);
             return View(prescription);
         }
 
@@ -92,6 +103,15 @@ namespace eZdravje.Controllers
             {
                 return NotFound();
             }
+            var doctors = _context.Specialists
+            .Select(s => new
+            {
+                Id = s.Id,
+                Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
+            })
+            .ToList();
+            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+
             PopulatePatientsDropDownList(prescription.Id);
             return View(prescription);
         }
@@ -116,7 +136,7 @@ namespace eZdravje.Controllers
                 prescriptionToUpdate,
                 "",
                 i => i.Name, i => i.Description, i => i.Free,
-                i => i.IsUsed))
+                i => i.IsUsed, i => i.SpecialistId, i => i.PatientId))
                 {
                 if(String.IsNullOrWhiteSpace(prescriptionToUpdate.Patient?.Name))
                 {
@@ -132,6 +152,7 @@ namespace eZdravje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", prescriptionToUpdate.SpecialistId);
             return View(prescriptionToUpdate);
         }
 
@@ -145,6 +166,7 @@ namespace eZdravje.Controllers
 
             var prescription = await _context.Prescriptions
                 .Include(p => p.Patient)
+                .Include(s => s.Specialist)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -174,10 +196,16 @@ namespace eZdravje.Controllers
 
         private void PopulatePatientsDropDownList(object selectedPatient = null)
         {
-            var patientsQuery = from p in _context.Patients
-                                orderby p.Name
-                                select p;
-            ViewBag.PatientId = new SelectList(patientsQuery.AsNoTracking(), "Id", "Name", selectedPatient);
+           
+            var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                })
+                .ToList();
+
+            ViewBag.PatientId = new SelectList(patients, "Id", "Patient", selectedPatient);
         }
     }
 }

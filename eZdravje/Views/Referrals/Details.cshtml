@@ -1,47 +1,41 @@
-﻿@model eZdravje.Models.Prescription
+﻿@model eZdravje.Models.Referral
 
 @{
-    ViewData["Title"] = "Izbriši recept";
+    ViewData["Title"] = "Podrobnosti o napotnici";
 }
 
-<h1>Izbriši recept</h1>
+<h1>O napotnici</h1>
 
-<h4>Skrbno preberite recept pred izbrisom!</h4>
 <div>
+    <h4>@Html.Raw($"Številka napotnice: {Model.Id}")</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            ID številka recepta
+            Naziv napotnice
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            Naziv
-        </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
             Opis
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class="col-sm-2">
-            Brez doplačila (zeleni recept)
+            Kategorija (1 - redno, 2 - hitro, 3 - nujno)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Free)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category)
         </dd>
         <dt class="col-sm-2">
-            Porabljen
+            Porabljeno
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsUsed)
         </dd>
         <dt class="col-sm-2">
-            Zdravnik, ki predpisuje
+            Zdravnik, ki izdaja napotnico
         </dt>
         <dd class="col-sm-10">
             @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
@@ -52,11 +46,15 @@
         <dd class="col-sm-10">
             @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
         </dd>
+        <dt class="col-sm-2">
+            Namenjenu specialistu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpecialistCategory.Name)
+        </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Izbriši recept" class="btn btn-danger" /> |
-        <a asp-action="Index">Nazaj na seznam</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Uredi</a> |
+    <a asp-action="Index">Nazaj na seznam</a>
 </div>

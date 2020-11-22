@@ -1,47 +1,47 @@
 ﻿@model eZdravje.Models.Specialist
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Podrobnosti o zdravniku";
 }
 
-<h1>Details</h1>
+<h1>O zdravniku</h1>
 
 <div>
-    <h4>Specialist</h4>
+    <h4>@Html.Raw(Model.Name + " " + Model.LastName)</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Ime
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            Priimek
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Street)
+            Naslov
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Street)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostalCode)
+            Poštna številka
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PostalCode)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
+            Naselje
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.City)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialistCategory.Name)
+            Specializacija
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SpecialistCategory.Name)
@@ -49,6 +49,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Uredi</a> |
+    <a asp-action="Index">Nazaj na seznam</a>
 </div>

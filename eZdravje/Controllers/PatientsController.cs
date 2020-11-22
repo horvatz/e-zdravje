@@ -22,7 +22,8 @@ namespace eZdravje.Controllers
         // GET: Patients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Patients.ToListAsync());
+            var patientContext = _context.Patients.Include(s => s.Specialist);
+            return View(await patientContext.ToListAsync());
         }
 
         // GET: Patients/Details/5
@@ -34,6 +35,7 @@ namespace eZdravje.Controllers
             }
 
             var patient = await _context.Patients
+                .Include(s => s.Specialist)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (patient == null)
             {
@@ -44,8 +46,18 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Create
+        
         public IActionResult Create()
         {
+            var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
+                })
+                .ToList();
+
+            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
             return View();
         }
 
@@ -54,7 +66,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,Birthday")] Patient patient)
+        public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +74,7 @@ namespace eZdravje.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", patient.SpecialistId);
             return View(patient);
         }
 
@@ -79,6 +91,7 @@ namespace eZdravje.Controllers
             {
                 return NotFound();
             }
+            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Name", patient.SpecialistId);
             return View(patient);
         }
 
@@ -87,7 +100,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Street,PostalCode,City,Birthday")] Patient patient)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
             if (id != patient.Id)
             {
@@ -114,6 +127,7 @@ namespace eZdravje.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", patient.SpecialistId);
             return View(patient);
         }
 
@@ -126,6 +140,7 @@ namespace eZdravje.Controllers
             }
 
             var patient = await _context.Patients
+                .Include(s => s.Specialist)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (patient == null)
             {
