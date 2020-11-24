@@ -63,9 +63,9 @@ namespace eZdravje.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             //[Required]
-            [EmailAddress]
-            [Display(Name = "Role")]
-            public string Role { get; set; }
+            //[EmailAddress]
+            //[Display(Name = "Selected Role")]
+            //public int SelectedRole { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -97,6 +97,14 @@ namespace eZdravje.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                   
+
+                    var currentUser = await _userManager.FindByNameAsync(user.UserName);
+
+
+                    var role = await _userManager.AddToRoleAsync(currentUser, "Administrator");
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

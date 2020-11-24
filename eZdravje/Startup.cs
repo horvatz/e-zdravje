@@ -27,12 +27,13 @@ namespace eZdravje
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PatientContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddControllersWithViews();
+            services.AddDbContext<PatientContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            
             services.AddIdentity<User, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128).AddEntityFrameworkStores<PatientContext>().AddDefaultUI().AddDefaultTokenProviders();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
