@@ -5,20 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201120175451_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201120175451_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201121144227_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201121144227_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201121161325_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201121161325_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201121165839_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201121165839_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201121174303_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201121174303_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201121185536_InitialMigration.cs" />
-    <Compile Remove="Migrations\20201121185536_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20201121192423_InitialMigration.cs" />
-    <Compile Remove="Migrations\20201121192423_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20201120175451_InitialCreate.cs"/>
+    <Compile Remove="Migrations\20201120175451_InitialCreate.Designer.cs"/>
+    <Compile Remove="Migrations\20201121144227_InitialCreate.cs"/>
+    <Compile Remove="Migrations\20201121144227_InitialCreate.Designer.cs"/>
+    <Compile Remove="Migrations\20201121161325_InitialCreate.cs"/>
+    <Compile Remove="Migrations\20201121161325_InitialCreate.Designer.cs"/>
+    <Compile Remove="Migrations\20201121165839_InitialCreate.cs"/>
+    <Compile Remove="Migrations\20201121165839_InitialCreate.Designer.cs"/>
+    <Compile Remove="Migrations\20201121174303_InitialCreate.cs"/>
+    <Compile Remove="Migrations\20201121174303_InitialCreate.Designer.cs"/>
+    <Compile Remove="Migrations\20201121185536_InitialMigration.cs"/>
+    <Compile Remove="Migrations\20201121185536_InitialMigration.Designer.cs"/>
+    <Compile Remove="Migrations\20201121192423_InitialMigration.cs"/>
+    <Compile Remove="Migrations\20201121192423_InitialMigration.Designer.cs"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -26,13 +26,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10"/>
   </ItemGroup>
 
 </Project>

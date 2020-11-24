@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eZdravje.Controllers
 {
@@ -46,6 +47,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Create
+        [Authorize(Roles = "Administrator, Direktor")]
         public IActionResult Create()
         {
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name");
@@ -57,6 +59,8 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
+        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,SpecialistCategoryId")] Specialist specialist)
         {
             if (ModelState.IsValid)
@@ -70,6 +74,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Edit/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +96,8 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Street,PostalCode,City,SpecialistCategoryId")] Specialist specialist)
         {
             if (id != specialist.Id)
@@ -123,6 +130,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Delete/5
+        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +152,8 @@ namespace eZdravje.Controllers
         // POST: Specialists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
+        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specialist = await _context.Specialists.FindAsync(id);

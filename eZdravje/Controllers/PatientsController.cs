@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace eZdravje.Controllers
 {
+    [Authorize(Roles = "Administrator, Direktor, Specialist")]
     public class PatientsController : Controller
     {
         private readonly PatientContext _context;
+        private readonly UserManager<User> _usermanager;
 
-        public PatientsController(PatientContext context)
+        public PatientsController(PatientContext context, UserManager<User> usermanager)
         {
             _context = context;
+            _usermanager = usermanager;
         }
 
         // GET: Patients
@@ -68,6 +73,7 @@ namespace eZdravje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
+            var currentUser = await _usermanager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 _context.Add(patient);
