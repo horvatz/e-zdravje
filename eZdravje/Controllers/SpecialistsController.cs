@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eZdravje.Controllers
 {
@@ -46,6 +47,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Create
+        [Authorize(Roles = "Administrator, Direktor")]
         public IActionResult Create()
         {
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name");
@@ -70,6 +72,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Edit/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +126,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Specialists/Delete/5
+        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

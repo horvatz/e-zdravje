@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eZdravje.Data;
 
 namespace eZdravje.Migrations
 {
     [DbContext(typeof(PatientContext))]
-    partial class PatientContextModelSnapshot : ModelSnapshot
+    [Migration("20201124121953_Auth2")]
+    partial class Auth2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,9 +184,6 @@ namespace eZdravje.Migrations
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SpecialistId");
@@ -288,9 +287,6 @@ namespace eZdravje.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

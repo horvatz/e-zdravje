@@ -18,6 +18,7 @@ namespace eZdravje.Models
 #nullable enable
         public int? SpecialistCategoryId { get; set; }
         public SpecialistCategory? SpecialistCategory { get; set; }
+        public string? UsersId { get; set; }
 #nullable disable
         public virtual ICollection<Patient> Patients { get; set; }
         public virtual ICollection<Prescription> Prescriptions { get; set; }

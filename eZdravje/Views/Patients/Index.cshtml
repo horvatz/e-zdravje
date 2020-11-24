@@ -60,7 +60,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Specialist.Name)
                 @Html.DisplayFor(modelItem => item.Specialist.LastName)
+                (ID:
                 @Html.DisplayFor(modelItem => item.Specialist.Id)
+                , Ustanova:
+                @Html.DisplayFor(modelItem => item.Specialist.Street)
+                )
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |

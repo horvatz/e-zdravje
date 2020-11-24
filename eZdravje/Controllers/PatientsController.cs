@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace eZdravje.Controllers
 {
+    [Authorize]
     public class PatientsController : Controller
     {
         private readonly PatientContext _context;
+        private readonly UserManager<User> _usermanager;
 
-        public PatientsController(PatientContext context)
+        public PatientsController(PatientContext context, UserManager<User> usermanager)
         {
             _context = context;
+            _usermanager = usermanager;
         }
 
         // GET: Patients
@@ -27,6 +32,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Details/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,7 +52,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Create
-        
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public IActionResult Create()
         {
             var doctors = _context.Specialists
@@ -68,6 +74,7 @@ namespace eZdravje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
+            var currentUser = await _usermanager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 _context.Add(patient);
@@ -79,6 +86,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Edit/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -132,6 +140,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Delete/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

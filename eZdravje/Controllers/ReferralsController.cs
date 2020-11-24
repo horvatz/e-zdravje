@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace eZdravje.Controllers
 {
+    [Authorize]
     public class ReferralsController : Controller
     {
         private readonly PatientContext _context;
+        private readonly UserManager<User> _usermanager;
 
-        public ReferralsController(PatientContext context)
+        public ReferralsController(PatientContext context, UserManager<User> usermanager)
         {
             _context = context;
+            _usermanager = usermanager;
         }
 
         // GET: Referrals
@@ -27,6 +32,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Details/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +54,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Create
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public IActionResult Create()
         {
             var patients = _context.Patients
@@ -78,10 +85,14 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Category,IsUsed,SpecialistId,PatientId,SpecialistCategoryId")] Referral referral)
         {
+            var currentUser = await _usermanager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
+                //referral.SpecialistId = currentUser;// cuurent logged in doc
                 _context.Add(referral);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,6 +104,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Edit/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -134,6 +146,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Category,IsUsed,SpecialistId,PatientId,SpecialistCategoryId")] Referral referral)
         {
             if (id != referral.Id)
@@ -168,6 +181,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Delete/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -191,6 +205,7 @@ namespace eZdravje.Controllers
         // POST: Referrals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var referral = await _context.Referrals.FindAsync(id);

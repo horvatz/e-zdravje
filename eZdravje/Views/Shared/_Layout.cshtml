@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - eZdravje</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://kit.fontawesome.com/260fc008ca.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -17,24 +18,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+
+                     <partial name="_LoginPartial"> 
+
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Domov</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-clinic-medical fa-xs"></i> Domov</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index"><i class="fas fa-user-injured fa-xs"></i> Pacienti</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Prescriptions" asp-action="Index">Recepti</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Prescriptions" asp-action="Index"><i class="fas fa-pills"></i> Recepti</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Referrals" asp-action="Index">Napotnice</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Referrals" asp-action="Index"><i class="fas fa-file-invoice fa-xs"></i> Napotnice</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Specialists" asp-action="Index">Zdravniki</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Specialists" asp-action="Index"><i class="fas fa-user-md fa-xs"></i> Zdravniki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SpecialistCategories" asp-action="Index">Specializacije</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SpecialistCategories" asp-action="Index"><i class="fas fa-certificate fa-xs"></i> Specializacije</a>
                         </li>
                     </ul>
                 </div>
