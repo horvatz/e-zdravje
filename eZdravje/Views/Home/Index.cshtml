@@ -3,5 +3,57 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">eZdravje</h1>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">eZdravje</h1>
+            <p class="lead">Aplikacija za poenostavitev zdravstvenih storitev</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <i class="fas fa-procedures fa-3x"></i>
+                        <h5 class="card-title">
+                            Upravljanje pacientov
+                        </h5>
+                        <p class="card-text">
+                            Aplikacija eZdravje omogoča enostavno upravljanje s pacienti in njihovimi podatki.
+                        </p>
+                        <a asp-controller="Patients" asp-action="Index" class="card-link">Na paciente</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <i class="fas fa-hospital fa-3x"></i>
+                        <h5 class="card-title">
+                            Celotna digitalizacija ustanove
+                        </h5>
+                        <p class="card-text">
+                            Podatki o vseh zaposlenih na enem mestu. Dodajajte, urejajte in pregledujte zaposlene delavce v ustanovi.
+                        </p>
+                        <a asp-controller="Specialists" asp-action="Index" class="card-link">Na zaposlene</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <i class="fas fa-capsules fa-3x"></i>
+                        <h5 class="card-title">
+                            eNapotnice in eRecepti
+                        </h5>
+                        <p class="card-text">
+                            Enostavno izdajajte napotnice in recepte povsem digitalno brez papirja.
+                        </p>
+                        <a asp-controller="Prescriptions" asp-action="Index" class="card-link">Na recepte</a>
+                        <a asp-controller="Referrals" asp-action="Index" class="card-link">Na napotnice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
