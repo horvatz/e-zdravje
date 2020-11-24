@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eZdravje.Controllers
 {
-    [Authorize(Roles = "Administrator, Direktor, Specialist")]
+    [Authorize]
     public class PatientsController : Controller
     {
         private readonly PatientContext _context;
@@ -32,6 +32,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Details/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -51,7 +52,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Create
-        
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public IActionResult Create()
         {
             var doctors = _context.Specialists
@@ -85,6 +86,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Edit/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -138,6 +140,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Delete/5
+        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

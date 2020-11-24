@@ -59,8 +59,6 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,SpecialistCategoryId")] Specialist specialist)
         {
             if (ModelState.IsValid)
@@ -96,8 +94,6 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Street,PostalCode,City,SpecialistCategoryId")] Specialist specialist)
         {
             if (id != specialist.Id)
@@ -152,8 +148,6 @@ namespace eZdravje.Controllers
         // POST: Specialists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        [Authorize(Roles = "Administrator, Direktor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specialist = await _context.Specialists.FindAsync(id);

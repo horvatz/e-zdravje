@@ -59,8 +59,13 @@ namespace eZdravje.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Gesli se ne ujemata.")]
             public string ConfirmPassword { get; set; }
+
+            //[Required]
+            [EmailAddress]
+            [Display(Name = "Role")]
+            public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)

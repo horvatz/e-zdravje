@@ -20,6 +20,7 @@ namespace eZdravje.Models
 #nullable enable
         public int? SpecialistId { get; set; }
         public Specialist? Specialist { get; set; }
+        public string? UsersId { get; set; }
 #nullable disable
         public virtual ICollection<Prescription> Prescriptions { get; set; }
         public virtual ICollection<Referral> Referrals { get; set; }
