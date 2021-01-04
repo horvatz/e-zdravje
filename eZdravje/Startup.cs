@@ -28,12 +28,9 @@ namespace eZdravje
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<PatientContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("AzureContext")));
-
-            
+            services.AddDbContext<PatientContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureContext")));
             services.AddIdentity<User, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128).AddEntityFrameworkStores<PatientContext>().AddDefaultUI().AddDefaultTokenProviders();
-            
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +61,12 @@ namespace eZdravje
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","My API V1");
             });
         }
     }
