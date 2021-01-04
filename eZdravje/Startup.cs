@@ -29,7 +29,7 @@ namespace eZdravje
         {
             services.AddControllersWithViews();
             services.AddDbContext<PatientContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("AzureContext")));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             
             services.AddIdentity<User, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128).AddEntityFrameworkStores<PatientContext>().AddDefaultUI().AddDefaultTokenProviders();
