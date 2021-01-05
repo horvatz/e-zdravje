@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
+using eZdravje.Filters;
 
 namespace eZdravje.Controllers_Api
 {
     [Route("api/v1/Pacienti")]
     [ApiController]
+    [ApiKeyAuth]
     public class PatientApiController : ControllerBase
     {
         private readonly PatientContext _context;
