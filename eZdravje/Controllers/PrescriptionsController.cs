@@ -29,14 +29,15 @@ namespace eZdravje.Controllers
         public async Task<IActionResult> Index()
         {
             
-            var user = await _usermanager.GetUserAsync(User);
-            var roles = await _usermanager.GetRolesAsync(user);
+            var user =  await _usermanager.GetUserAsync(User);
+            var roles =  await _usermanager.GetRolesAsync(user);
+
 
             if (roles.Contains("Zdravnik"))
             {
                 var currentSpecialist = await _context.Specialists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
 
-                var prescriptions = _context.Prescriptions
+                var prescriptions =  _context.Prescriptions
                 .Include(c => c.Patient)
                 .Include(s => s.Specialist)
                 .Where(s => s.SpecialistId == currentSpecialist.Id)
@@ -93,18 +94,61 @@ namespace eZdravje.Controllers
 
         // GET: Prescriptions/Create
         [Authorize(Roles = "Administrator, Zdravnik")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            PopulatePatientsDropDownList();
-            var doctors = _context.Specialists
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await  _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                   Id = s.Id,
+                   Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                   SpecialistId = s.SpecialistId
+                   
+                }).Where(s => s.SpecialistId == doctors[0].Id )
+               .ToList();
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
+                
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View();
+            }
+            else
+            {
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
                 })
                 .ToList();
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
-            return View();
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
+
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
+                })
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+
+
+                return View();
+            }
+           
         }
 
         // POST: Prescriptions/Create
@@ -121,7 +165,6 @@ namespace eZdravje.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            PopulatePatientsDropDownList(prescription.PatientId);
             ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", prescription.SpecialistId);
             return View(prescription);
         }
@@ -145,17 +188,57 @@ namespace eZdravje.Controllers
             {
                 return NotFound();
             }
-            var doctors = _context.Specialists
-            .Select(s => new
-            {
-                Id = s.Id,
-                Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
-            })
-            .ToList();
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
 
-            PopulatePatientsDropDownList(prescription.Id);
-            return View(prescription);
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                    SpecialistId = s.SpecialistId
+
+                }).Where(s => s.SpecialistId == doctors[0].Id)
+               .ToList();
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
+
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View(prescription);
+            }
+            else
+            {
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                })
+                .ToList();
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
+
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
+                })
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+
+                return View(prescription);
+            }
         }
 
         // POST: Prescriptions/Edit/5
@@ -232,25 +315,6 @@ namespace eZdravje.Controllers
             _context.Prescriptions.Remove(prescription);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PrescriptionExists(int id)
-        {
-            return _context.Prescriptions.Any(e => e.Id == id);
-        }
-
-        private void PopulatePatientsDropDownList(object selectedPatient = null)
-        {
-           
-            var patients = _context.Patients
-                .Select(s => new
-                {
-                    Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
-                })
-                .ToList();
-
-            ViewBag.PatientId = new SelectList(patients, "Id", "Patient", selectedPatient);
         }
     }
 }

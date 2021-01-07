@@ -78,18 +78,40 @@ namespace eZdravje.Controllers
 
         [Authorize(Roles = "Administrator, Zdravnik")]
         // GET: Patients/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var doctors = _context.Specialists
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+  
+
+            if(roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View();
+
+            } 
+            else
+            {
+                var doctors = _context.Specialists
                 .Select(s => new
                 {
                     Id = s.Id,
                     Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
                 })
                 .ToList();
-
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
-            return View();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View();
+            }
+            
         }
 
         // POST: Patients/Create
@@ -150,16 +172,35 @@ namespace eZdravje.Controllers
                 return NotFound();
             }
 
-            var doctors = _context.Specialists
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View(patient);
+
+            }
+            else
+            {
+                var doctors = _context.Specialists
                 .Select(s => new
                 {
                     Id = s.Id,
                     Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
                 })
                 .ToList();
-
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
-            return View(patient);
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+                return View(patient);
+            }
         }
 
         // POST: Patients/Edit/5

@@ -78,8 +78,11 @@ namespace eZdravje.Controllers
 
         // GET: Referrals/Create
         [Authorize(Roles = "Administrator, Zdravnik")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
             var patients = _context.Patients
                 .Select(s => new
                 {
@@ -89,16 +92,30 @@ namespace eZdravje.Controllers
 
                 .ToList();
 
-            var doctors = _context.Specialists
+            if(roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+            } else
+            {
+                var doctors = _context.Specialists
                 .Select(s => new
                 {
                     Id = s.Id,
                     Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
                 })
                 .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+            }
 
             ViewData["PatientId"] = new SelectList(patients, "Id", "Item");
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name");
             return View();
         }
@@ -130,6 +147,9 @@ namespace eZdravje.Controllers
         [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int? id)
         {
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
             if (id == null)
             {
                 return NotFound();
@@ -150,16 +170,32 @@ namespace eZdravje.Controllers
 
                 .ToList();
 
-            var doctors = _context.Specialists
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+            }
+            else
+            {
+                var doctors = _context.Specialists
                 .Select(s => new
                 {
                     Id = s.Id,
                     Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
                 })
                 .ToList();
+                ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+            }
 
             ViewData["PatientId"] = new SelectList(patients, "Id", "Item", referral.PatientId);
-            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item", referral.SpecialistId);
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name", referral.SpecialistCategoryId);
             return View(referral);
         }
