@@ -19,6 +19,12 @@
     <Compile Remove="Migrations\20201121185536_InitialMigration.Designer.cs" />
     <Compile Remove="Migrations\20201121192423_InitialMigration.cs" />
     <Compile Remove="Migrations\20201121192423_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20210107152427_Identit.cs" />
+    <Compile Remove="Migrations\20210107152427_Identit.Designer.cs" />
+    <Compile Remove="Migrations\20210107153445_Identity.cs" />
+    <Compile Remove="Migrations\20210107153445_Identity.Designer.cs" />
+    <Compile Remove="Migrations\20210107171248_ActivationCodes.cs" />
+    <Compile Remove="Migrations\20210107171248_ActivationCodes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

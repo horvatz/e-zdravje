@@ -25,14 +25,37 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals
+        [Authorize(Roles = "Administrator, Zdravnik, Pacient")]
         public async Task<IActionResult> Index()
         {
-            var patientContext = _context.Referrals.Include(r => r.Patient).Include(r => r.Specialist).Include(r => r.SpecialistCategory);
-            return View(await patientContext.ToListAsync());
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var currentSpecialist = await _context.Specialists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+
+                var referrals = _context.Referrals.Include(r => r.Patient).Include(r => r.Specialist).Include(r => r.SpecialistCategory).Where(r => r.SpecialistId == currentSpecialist.Id);
+
+                return View(await referrals.ToListAsync());
+            }
+            else if (roles.Contains("Pacient"))
+            {
+                var currentPatient = await _context.Patients.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+
+                var referrals = _context.Referrals.Include(r => r.Patient).Include(r => r.Specialist).Include(r => r.SpecialistCategory).Where(r => r.PatientId == currentPatient.Id);
+
+                return View(await referrals.ToListAsync());
+            }
+            else
+            {
+                var referrals = _context.Referrals.Include(r => r.Patient).Include(r => r.Specialist).Include(r => r.SpecialistCategory);
+                return View(await referrals.ToListAsync());
+            }
         }
 
         // GET: Referrals/Details/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik, Pacient")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -54,7 +77,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Create
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public IActionResult Create()
         {
             var patients = _context.Patients
@@ -85,7 +108,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Category,IsUsed,SpecialistId,PatientId,SpecialistCategoryId")] Referral referral)
         {
             var currentUser = await _usermanager.GetUserAsync(User);
@@ -104,7 +127,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Edit/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -146,7 +169,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Category,IsUsed,SpecialistId,PatientId,SpecialistCategoryId")] Referral referral)
         {
             if (id != referral.Id)
@@ -181,7 +204,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Referrals/Delete/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -205,7 +228,7 @@ namespace eZdravje.Controllers
         // POST: Referrals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var referral = await _context.Referrals.FindAsync(id);

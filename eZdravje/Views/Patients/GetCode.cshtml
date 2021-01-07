@@ -1,0 +1,23 @@
+﻿@model eZdravje.Models.Patient
+@{
+    ViewData["Title"] = "Aktivacijska koda";
+}
+
+<h1>Aktivacijska koda</h1>
+<div>
+    <h5>Spodnjo kodo dostavite k izbranemu pacientu za registracijo na storitev eZdravje</h5>
+    <h3 id="code-txt">
+        @ViewData["Code"]
+    </h3>
+    <style>
+        #code-txt {
+            margin-top: 50px;
+            align-items: center;
+            display: flex;
+            justify-content: center
+        }
+    </style>
+    <div>
+        <a asp-action="Index">Nazaj na paciente</a>
+    </div>
+</div>

@@ -45,7 +45,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: SpecialistCategories/Create
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -56,7 +56,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] SpecialistCategory specialistCategory)
         {
             if (ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: SpecialistCategories/Edit/5
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +90,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Description")] SpecialistCategory specialistCategory)
         {
             if (id != specialistCategory.Id)
@@ -122,7 +122,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: SpecialistCategories/Delete/5
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,7 +143,7 @@ namespace eZdravje.Controllers
         // POST: SpecialistCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var specialistCategory = await _context.SpecialistCategories.FindAsync(id);

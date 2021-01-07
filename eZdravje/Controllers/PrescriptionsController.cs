@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using eZdravje.Data;
 using eZdravje.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace eZdravje.Controllers
 {
@@ -15,24 +16,60 @@ namespace eZdravje.Controllers
     public class PrescriptionsController : Controller
     {
         private readonly PatientContext _context;
+        private readonly UserManager<User> _usermanager;
 
-        public PrescriptionsController(PatientContext context)
+        public PrescriptionsController(PatientContext context, UserManager<User> usermanager)
         {
             _context = context;
+            _usermanager = usermanager;
         }
 
         // GET: Prescriptions
+        [Authorize(Roles = "Administrator, Zdravnik, Pacient")]
         public async Task<IActionResult> Index()
         {
-            var prescriptions = _context.Prescriptions
-            .Include(c => c.Patient)
-            .Include(s => s.Specialist)
-            .AsNoTracking();
-            return View(await prescriptions.ToListAsync());
-            //return View(await _context.Prescriptions.ToListAsync());
+            
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var currentSpecialist = await _context.Specialists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+
+                var prescriptions = _context.Prescriptions
+                .Include(c => c.Patient)
+                .Include(s => s.Specialist)
+                .Where(s => s.SpecialistId == currentSpecialist.Id)
+                .AsNoTracking();
+
+                return View(await prescriptions.ToListAsync());
+            }
+            else if(roles.Contains("Pacient"))
+            {
+                var currentPatient = await _context.Patients.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+
+                var prescriptions = _context.Prescriptions
+                .Include(c => c.Patient)
+                .Include(s => s.Specialist)
+                .Where(c => c.PatientId == currentPatient.Id)
+                .AsNoTracking();
+
+                return View(await prescriptions.ToListAsync());
+                
+            } 
+            else
+            {
+                var prescriptions = _context.Prescriptions
+                .Include(c => c.Patient)
+                .Include(s => s.Specialist)
+                .AsNoTracking();
+
+                return View(await prescriptions.ToListAsync());
+            }
         }
 
         // GET: Prescriptions/Details/5
+        [Authorize(Roles = "Administrator, Zdravnik, Pacient")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,7 +92,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Prescriptions/Create
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public IActionResult Create()
         {
             PopulatePatientsDropDownList();
@@ -75,7 +112,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Free,IsUsed,PatientId,SpecialistId")] Prescription prescription)
         {
             if (ModelState.IsValid)
@@ -90,7 +127,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Prescriptions/Edit/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -126,7 +163,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> EditPrescription(int? id)
         {
             if(id == null)
@@ -163,7 +200,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Prescriptions/Delete/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -188,7 +225,7 @@ namespace eZdravje.Controllers
         // POST: Prescriptions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var prescription = await _context.Prescriptions.FindAsync(id);

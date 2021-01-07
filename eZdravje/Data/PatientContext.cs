@@ -20,6 +20,7 @@ namespace eZdravje.Data
         public DbSet<Referral> Referrals { get; set; }
         public DbSet<Specialist> Specialists { get; set; }
         public DbSet<SpecialistCategory> SpecialistCategories { get; set; }
+        public DbSet<ActivationCode> ActivationCodes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

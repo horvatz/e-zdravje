@@ -31,6 +31,7 @@ namespace eZdravje
             services.AddDbContext<PatientContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureContext")));
             services.AddIdentity<User, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128).AddEntityFrameworkStores<PatientContext>().AddDefaultUI().AddDefaultTokenProviders();
             services.AddSwaggerGen();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

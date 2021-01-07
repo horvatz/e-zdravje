@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Security.Cryptography;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +27,37 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Index()
         {
-            var patientContext = _context.Patients.Include(s => s.Specialist);
-            return View(await patientContext.ToListAsync());
+            var user = await _usermanager.GetUserAsync(User);
+            var roles = await _usermanager.GetRolesAsync(user);
+
+            if (roles.Contains("Zdravnik"))
+            {
+                var currentSpecialist = await _context.Specialists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
+                var patientContext = _context.Patients.Include(s => s.Specialist).Where(s => s.SpecialistId == currentSpecialist.Id);
+                return View(await patientContext.ToListAsync());
+            }
+            else
+            {
+                var patientContext = _context.Patients.Include(s => s.Specialist);
+                return View(await patientContext.ToListAsync());
+            }
+
+
+        }
+
+        // GET: Patients/GetCode
+        [Authorize(Roles = "Administrator, Zdravnik")]
+        public IActionResult GetCode(string code)
+        {
+            ViewData["Code"] = code;
+            return View();
         }
 
         // GET: Patients/Details/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -51,8 +76,8 @@ namespace eZdravje.Controllers
             return View(patient);
         }
 
+        [Authorize(Roles = "Administrator, Zdravnik")]
         // GET: Patients/Create
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
         public IActionResult Create()
         {
             var doctors = _context.Specialists
@@ -72,6 +97,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
             var currentUser = await _usermanager.GetUserAsync(User);
@@ -79,14 +105,38 @@ namespace eZdravje.Controllers
             {
                 _context.Add(patient);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var code = DateTime.Now.ToString() + "klgdjfslhghbvcx456";
+
+                var tmpSource = ASCIIEncoding.ASCII.GetBytes(code);
+                var tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+
+                StringBuilder codeOut = new StringBuilder(tmpHash.Length);
+                for (int i = 0; i < tmpHash.Length; i++)
+                {
+                    codeOut.Append(tmpHash[i].ToString("X2"));
+                }
+
+                var codeObj = new ActivationCode
+                {
+                    Code = codeOut.ToString(),
+                    Role = "Pacient",
+                    UserId = patient.Id.ToString(),
+                    IsUsed = false
+                };
+
+                _context.Add(codeObj);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(GetCode), new { code = codeOut.ToString()});
             }
             ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Id", patient.SpecialistId);
             return View(patient);
         }
 
         // GET: Patients/Edit/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist, Pacient")]
+
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,7 +149,16 @@ namespace eZdravje.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpecialistId"] = new SelectList(_context.Specialists, "Id", "Name", patient.SpecialistId);
+
+            var doctors = _context.Specialists
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
+                })
+                .ToList();
+
+            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
             return View(patient);
         }
 
@@ -108,6 +167,7 @@ namespace eZdravje.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,Street,PostalCode,City,Birthday,SpecialistId")] Patient patient)
         {
             if (id != patient.Id)
@@ -140,7 +200,7 @@ namespace eZdravje.Controllers
         }
 
         // GET: Patients/Delete/5
-        [Authorize(Roles = "Administrator, Direktor, Specialist")]
+        [Authorize(Roles = "Administrator, Zdravnik")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,6 +220,7 @@ namespace eZdravje.Controllers
         }
 
         // POST: Patients/Delete/5
+        [Authorize(Roles = "Administrator, Zdravnik")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

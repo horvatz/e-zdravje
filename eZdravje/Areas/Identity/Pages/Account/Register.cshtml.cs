@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using eZdravje.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace eZdravje.Areas.Identity.Pages.Account
 {
@@ -22,6 +25,9 @@ namespace eZdravje.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly PatientContext _context;
+
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
@@ -29,12 +35,16 @@ namespace eZdravje.Areas.Identity.Pages.Account
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManager,
+            PatientContext context,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
+            _context = context;
         }
 
         [BindProperty]
@@ -57,19 +67,28 @@ namespace eZdravje.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "Gesli se ne ujemata.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Activation Code")]
+            public string ActivationCode { get; set; }
+
+
 
             //[Required]
             //[EmailAddress]
             //[Display(Name = "Selected Role")]
             //public int SelectedRole { get; set; }
         }
-
+        public List<SelectListItem> Options { get; set; }
         public async Task OnGetAsync(string returnUrl = null)
         {
+            
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -80,46 +99,85 @@ namespace eZdravje.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+
+                var codeCheck = await _context.ActivationCodes.FirstOrDefaultAsync(x => x.Code == Input.ActivationCode);
                 
-                if (result.Succeeded)
+
+                if (codeCheck != null && !codeCheck.IsUsed)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var user = new User { UserName = Input.Email, Email = Input.Email };
+                    var result = await _userManager.CreateAsync(user, Input.Password);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                   
-
-                    var currentUser = await _userManager.FindByNameAsync(user.UserName);
-
-
-                    var role = await _userManager.AddToRoleAsync(currentUser, "Administrator");
-
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (result.Succeeded)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+
+
+                        var currentUser = await _userManager.FindByNameAsync(user.UserName);
+
+
+                        if (!await _roleManager.RoleExistsAsync(codeCheck.Role))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(codeCheck.Role));
+                        }
+
+                        var role = await _userManager.AddToRoleAsync(currentUser, codeCheck.Role);
+
+                        if(codeCheck.Role == "Pacient")
+                        {
+                            var res = _context.Patients.SingleOrDefault(x => x.Id == Int32.Parse(codeCheck.UserId));
+                            if(res != null)
+                            {
+                                res.UserId = currentUser.Id;
+                            }
+
+                        } else if(codeCheck.Role == "Zdravnik")
+                        {
+                            var res = _context.Specialists.SingleOrDefault(x => x.Id == Int32.Parse(codeCheck.UserId));
+                            if (res != null)
+                            {
+                                res.UserId = currentUser.Id;
+                            }
+                        }
+
+                        codeCheck.IsUsed = true;
+                        await _context.SaveChangesAsync();
+
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                    else
+                    foreach (var error in result.Errors)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
-                }
-                foreach (var error in result.Errors)
+                } 
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("", "Aktivacijska koda ni pravilna");
                 }
+                
+               
+               
             }
 
             // If we got this far, something failed, redisplay form

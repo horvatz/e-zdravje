@@ -11,6 +11,7 @@ namespace eZdravje.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+
         public string Street { get; set; }
         public int PostalCode { get; set; }
         public string City { get; set; }
@@ -18,7 +19,7 @@ namespace eZdravje.Models
 #nullable enable
         public int? SpecialistCategoryId { get; set; }
         public SpecialistCategory? SpecialistCategory { get; set; }
-        public string? UsersId { get; set; }
+        public string? UserId { get; set; }
 #nullable disable
         public virtual ICollection<Patient> Patients { get; set; }
         public virtual ICollection<Prescription> Prescriptions { get; set; }

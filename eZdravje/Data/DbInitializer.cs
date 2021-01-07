@@ -17,23 +17,19 @@ namespace eZdravje.Data
                 return;
             }
 
-            string[] roles = new string[] { "Administrator", "Direktor", "Specialist", "Pacient"};
-
-           
-            foreach(string r in roles)
+            var roles = new IdentityRole[]
             {
-                var roleStore = new RoleStore<IdentityRole>(context);
-                var nr = new IdentityRole(r);
-                nr.NormalizedName = r.ToUpper();
-                roleStore.CreateAsync(nr);
-            }
+                new IdentityRole{Id="2", Name="Staff"},
+                new IdentityRole{Id="3", Name="Patient"}
+            };
             
 
-            /*foreach (IdentityRole r in roles)
+            foreach (IdentityRole r in roles)
             {
-                context.Roles.Add(r);
+                var roleStore = new RoleStore<IdentityRole>(context);
+                roleStore.CreateAsync(r);
               
-            }*/
+            }
 
             context.SaveChanges();
         }
