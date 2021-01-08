@@ -41,6 +41,84 @@ namespace eZdravje.Controllers
             return View();
         }
 
+        // GET: Specialists/CodesList
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CodesList()
+        {
+            var codes = _context.ActivationCodes.Where(s => s.Role == "Zdravnik").OrderBy(s => s.UserId);
+            return View(await codes.ToListAsync());
+        }
+
+        // GET: Specialists/CodesCreate
+        [Authorize(Roles = "Administrator")]
+        public IActionResult CodeCreate()
+        {
+            var doctors = _context.Specialists
+               .Select(s => new
+               {
+                   Id = s.Id,
+                   Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                   UserId = s.UserId
+               })
+               .ToList();
+            ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
+            return View();
+        }
+
+        // POST: Specialists/CodesCreate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CodeCreate([Bind("Id")] Specialist specialist)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.ActivationCodes.RemoveRange(_context.ActivationCodes.Where(a => a.UserId == specialist.Id.ToString()));
+                await _context.SaveChangesAsync();
+
+                var code = DateTime.Now.ToString() + "klgdjfslhghbvcx456";
+
+                var tmpSource = ASCIIEncoding.ASCII.GetBytes(code);
+                var tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+
+                StringBuilder codeOut = new StringBuilder(tmpHash.Length);
+                for (int i = 0; i < tmpHash.Length; i++)
+                {
+                    codeOut.Append(tmpHash[i].ToString("X2"));
+                }
+
+                var codeObj = new ActivationCode
+                {
+                    Code = codeOut.ToString(),
+                    Role = "Zdravnik",
+                    UserId = specialist.Id.ToString(),
+                    IsUsed = false
+                };
+
+                _context.Add(codeObj);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(GetCode), new { code = codeOut.ToString() });
+            }
+            return View();
+        }
+
+        // POST Specialists/CodesDeactivate
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeactivateCode(int id)
+        {
+            var code = await _context.ActivationCodes.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(code != null)
+            {
+                code.IsUsed = true;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CodesList));
+        }
+
         // GET: Specialists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -143,6 +221,12 @@ namespace eZdravje.Controllers
 
             if (ModelState.IsValid)
             {
+                var current = await _context.Specialists.AsNoTracking().SingleOrDefaultAsync(s => s.Id == specialist.Id);
+                if(current.UserId != null)
+                {
+                    specialist.UserId = current.UserId;
+                }
+                
                 try
                 {
                     _context.Update(specialist);

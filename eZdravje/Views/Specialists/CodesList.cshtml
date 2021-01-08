@@ -1,0 +1,54 @@
+﻿@model IEnumerable<eZdravje.Models.ActivationCode>
+
+@{
+    ViewData["Title"] = "CodesList";
+}
+
+<h1>Kode za dostop</h1>
+<h5>Spodaj so kode za registracijo <b>zdravnikov</b> na aplikacijo eZdravje</h5>
+
+<p>
+    <a asp-action="CodeCreate">Ustvari novo kodo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Aktivacijska koda
+            </th>
+            <th>
+                Izdano za
+            </th>
+            <th>
+                ID zdravnika
+            </th>
+            <th>
+                Porabljena koda
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsUsed)
+            </td>
+            <td>
+                <form asp-action="DeactivateCode" asp-route-id="@item.Id">
+                    <button type="submit" class="btn btn-danger" >Deaktiviraj</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

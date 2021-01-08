@@ -105,7 +105,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})",
                     UserId = s.UserId
                 }).Where(s => s.UserId == user.Id)
                 .ToList();
@@ -114,10 +114,10 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                    Id = s.Id,
-                   Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                   Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
                    SpecialistId = s.SpecialistId
                    
-                }).Where(s => s.SpecialistId == doctors[0].Id )
+                })
                .ToList();
                 ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
                 
@@ -198,7 +198,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})",
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})",
                     UserId = s.UserId
                 }).Where(s => s.UserId == user.Id)
                 .ToList();
@@ -207,10 +207,9 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
                     SpecialistId = s.SpecialistId
-
-                }).Where(s => s.SpecialistId == doctors[0].Id)
+                })
                .ToList();
                 ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
 
@@ -223,7 +222,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
                 })
                 .ToList();
                 ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);

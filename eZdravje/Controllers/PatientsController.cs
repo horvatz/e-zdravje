@@ -36,7 +36,7 @@ namespace eZdravje.Controllers
             if (roles.Contains("Zdravnik"))
             {
                 var currentSpecialist = await _context.Specialists.Where(x => x.UserId == user.Id).FirstOrDefaultAsync();
-                var patientContext = _context.Patients.Include(s => s.Specialist).Where(s => s.SpecialistId == currentSpecialist.Id);
+                var patientContext =  _context.Patients.Include(s => s.Specialist).Where(s => s.SpecialistId == currentSpecialist.Id);
                 return View(await patientContext.ToListAsync());
             }
             else
@@ -54,6 +54,83 @@ namespace eZdravje.Controllers
         {
             ViewData["Code"] = code;
             return View();
+        }
+
+        // GET: Patients/CodesList
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CodesList()
+        {
+            var codes = _context.ActivationCodes.Where(s => s.Role == "Pacient").OrderBy(s => s.UserId);
+            return View(await codes.ToListAsync());
+        }
+
+        // GET: Patients/CodesCreate
+        [Authorize(Roles = "Administrator")]
+        public IActionResult CodeCreate()
+        {
+            var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
+                })
+
+                .ToList();
+            ViewData["PatientId"] = new SelectList(patients, "Id", "Item");
+            return View();
+        }
+
+        // POST: Patients/CodesCreate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CodeCreate([Bind("Id")] Patient patient)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.ActivationCodes.RemoveRange(_context.ActivationCodes.Where(a => a.UserId == patient.Id.ToString()));
+                await _context.SaveChangesAsync();
+
+                var code = DateTime.Now.ToString() + "klgdjfslhghbvcx456";
+
+                var tmpSource = ASCIIEncoding.ASCII.GetBytes(code);
+                var tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+
+                StringBuilder codeOut = new StringBuilder(tmpHash.Length);
+                for (int i = 0; i < tmpHash.Length; i++)
+                {
+                    codeOut.Append(tmpHash[i].ToString("X2"));
+                }
+
+                var codeObj = new ActivationCode
+                {
+                    Code = codeOut.ToString(),
+                    Role = "Pacient",
+                    UserId = patient.Id.ToString(),
+                    IsUsed = false
+                };
+
+                _context.Add(codeObj);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(GetCode), new { code = codeOut.ToString() });
+            }
+            return View();
+        }
+
+        // POST Patients/CodesDeactivate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeactivateCode(int id)
+        {
+            var code = await _context.ActivationCodes.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if (code != null)
+            {
+                code.IsUsed = true;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CodesList));
         }
 
         // GET: Patients/Details/5
@@ -218,6 +295,12 @@ namespace eZdravje.Controllers
 
             if (ModelState.IsValid)
             {
+                var current = await _context.Patients.AsNoTracking().SingleOrDefaultAsync(s => s.Id == patient.Id);
+                if (current.UserId != null)
+                {
+                    patient.UserId = current.UserId;
+                }
+
                 try
                 {
                     _context.Update(patient);

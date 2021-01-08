@@ -83,14 +83,7 @@ namespace eZdravje.Controllers
             var user = await _usermanager.GetUserAsync(User);
             var roles = await _usermanager.GetRolesAsync(user);
 
-            var patients = _context.Patients
-                .Select(s => new
-                {
-                    Id = s.Id,
-                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
-                })
-
-                .ToList();
+            
 
             if(roles.Contains("Zdravnik"))
             {
@@ -102,9 +95,29 @@ namespace eZdravje.Controllers
                     UserId = s.UserId
                 }).Where(s => s.UserId == user.Id)
                 .ToList();
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
+                    SpecialistId = s.SpecialistId
+                }).Where(s => s.SpecialistId == doctors[0].Id)
+                .ToList();
+
+                ViewData["PatientId"] = new SelectList(patients, "Id", "Item");
                 ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
             } else
             {
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
+                    UserId = s.UserId
+                }).Where(s => s.UserId == user.Id)
+                .ToList();
+
                 var doctors = _context.Specialists
                 .Select(s => new
                 {
@@ -112,10 +125,11 @@ namespace eZdravje.Controllers
                     Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
                 })
                 .ToList();
+
+                ViewData["PatientId"] = new SelectList(patients, "Id", "Item");
                 ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
             }
 
-            ViewData["PatientId"] = new SelectList(patients, "Id", "Item");
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name");
             return View();
         }
@@ -161,15 +175,6 @@ namespace eZdravje.Controllers
                 return NotFound();
             }
 
-            var patients = _context.Patients
-                .Select(s => new
-                {
-                    Id = s.Id,
-                    Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
-                })
-
-                .ToList();
-
 
             if (roles.Contains("Zdravnik"))
             {
@@ -181,7 +186,20 @@ namespace eZdravje.Controllers
                     UserId = s.UserId
                 }).Where(s => s.UserId == user.Id)
                 .ToList();
+
                 ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                    SpecialistId = s.SpecialistId
+
+                }).Where(s => s.SpecialistId == doctors[0].Id)
+               .ToList();
+
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
             }
             else
             {
@@ -192,10 +210,20 @@ namespace eZdravje.Controllers
                     Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
                 })
                 .ToList();
+
                 ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Item");
+
+                var patients = _context.Patients
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                })
+                .ToList();
+
+                ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
             }
 
-            ViewData["PatientId"] = new SelectList(patients, "Id", "Item", referral.PatientId);
             ViewData["SpecialistCategoryId"] = new SelectList(_context.SpecialistCategories, "Id", "Name", referral.SpecialistCategoryId);
             return View(referral);
         }

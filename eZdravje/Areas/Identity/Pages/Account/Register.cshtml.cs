@@ -137,7 +137,7 @@ namespace eZdravje.Areas.Identity.Pages.Account
 
                         if(codeCheck.Role == "Pacient")
                         {
-                            var res = _context.Patients.SingleOrDefault(x => x.Id == Int32.Parse(codeCheck.UserId));
+                            var res = await _context.Patients.SingleOrDefaultAsync(x => x.Id == Int32.Parse(codeCheck.UserId));
                             if(res != null)
                             {
                                 res.UserId = currentUser.Id;
@@ -145,7 +145,7 @@ namespace eZdravje.Areas.Identity.Pages.Account
 
                         } else if(codeCheck.Role == "Zdravnik")
                         {
-                            var res = _context.Specialists.SingleOrDefault(x => x.Id == Int32.Parse(codeCheck.UserId));
+                            var res = await _context.Specialists.SingleOrDefaultAsync(x => x.Id == Int32.Parse(codeCheck.UserId));
                             if (res != null)
                             {
                                 res.UserId = currentUser.Id;
