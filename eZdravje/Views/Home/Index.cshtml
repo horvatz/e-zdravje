@@ -1,18 +1,23 @@
 ﻿@{
     ViewData["Title"] = "Domov";
 }
-
-<div class="text-center">
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">eZdravje</h1>
-            <p class="lead">Aplikacija za poenostavitev zdravstvenih storitev</p>
-        </div>
-    </div>
+<div class="heading">
     <div class="container">
         <div class="row">
-            <div class="col-sm">
-                <div class="card">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Popolna avtomatizacija zdravstva</h1>
+                    <p>eZdravje je moderna rešitev za zdravstvene ustanove</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <div class="container main-cards">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card" style="min-height: 350px">
                     <div class="card-body">
                         <i class="fas fa-procedures fa-3x"></i>
                         <h5 class="card-title">
@@ -25,8 +30,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="card">
+            <div class="col-sm-4">
+                <div class="card" style="min-height: 350px">
                     <div class="card-body">
                         <i class="fas fa-hospital fa-3x"></i>
                         <h5 class="card-title">
@@ -39,8 +44,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="card">
+            <div class="col-sm-4">
+                <div class="card" style="min-height: 350px">
                     <div class="card-body">
                         <i class="fas fa-capsules fa-3x"></i>
                         <h5 class="card-title">
@@ -54,6 +59,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="ad-bottom">
+            <h1>Že imate aktivacijsko kodo?</h1>
+            <p>Registrirajte se danes in začnite uporabljati zdravstvo na sodoben način.</p>
+            <form asp-area="Identity" asp-page="/Account/Register">
+                <button type="submit"  class="btn btn-primary">Registracija</button>
+            </form>
         </div>
     </div>
 </div>

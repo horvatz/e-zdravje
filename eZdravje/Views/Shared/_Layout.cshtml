@@ -6,11 +6,14 @@
     <title>@ViewData["Title"] - eZdravje</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://kit.fontawesome.com/260fc008ca.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark navbar-theme box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">eZdravje</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,36 +24,33 @@
 
                      <partial name="_LoginPartial"> 
 
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 menu-items">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-clinic-medical fa-xs"></i> Domov</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-clinic-medical fa-xs"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index"><i class="fas fa-user-injured fa-xs"></i> Pacienti</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Patients" asp-action="Index"><i class="fas fa-user-injured fa-xs"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Prescriptions" asp-action="Index"><i class="fas fa-pills"></i> Recepti</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Prescriptions" asp-action="Index"><i class="fas fa-pills"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Referrals" asp-action="Index"><i class="fas fa-file-invoice fa-xs"></i> Napotnice</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Referrals" asp-action="Index"><i class="fas fa-file-invoice fa-xs"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Specialists" asp-action="Index"><i class="fas fa-user-md fa-xs"></i> Zdravniki</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Specialists" asp-action="Index"><i class="fas fa-user-md fa-xs"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SpecialistCategories" asp-action="Index"><i class="fas fa-certificate fa-xs"></i> Specializacije</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="SpecialistCategories" asp-action="Index"><i class="fas fa-certificate fa-xs"></i></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - eZdravje
