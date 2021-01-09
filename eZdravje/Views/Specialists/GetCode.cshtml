@@ -3,21 +3,34 @@
     ViewData["Title"] = "Aktivacijska koda";
 }
 
-<h1>Aktivacijska koda</h1>
-<div>
-    <h5>Spodnjo kodo dostavite k izbranemu zdravniku za registracijo na storitev eZdravje</h5>
-    <h3 id="code-txt">
-        @ViewData["Code"]
-    </h3>
-    <style>
-        #code-txt {
-            margin-top: 50px;
-            align-items: center;
-            display: flex;
-            justify-content: center
-        }
-    </style>
-    <div>
-        <a asp-action="Index">Nazaj na zdravnike</a>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">@ViewData["Title"]</h1>
+                    <p>Spodnjo kodo dostavite k izbranemu zdravniku za registracijo na storitev eZdravje.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center" style="margin: 30px">
+                    <div class="col-12">
+                        <h3 id="code-txt">
+                            @ViewData["Code"]
+                        </h3>
+
+                        <div>
+                            <a asp-action="Index">Nazaj na zdravnike</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

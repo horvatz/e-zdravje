@@ -276,6 +276,8 @@ namespace eZdravje.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specialist = await _context.Specialists.FindAsync(id);
+            var activationCode = await _context.ActivationCodes.Where(x => x.UserId == id.ToString()).FirstOrDefaultAsync();
+            _context.ActivationCodes.Remove(activationCode);
             _context.Specialists.Remove(specialist);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

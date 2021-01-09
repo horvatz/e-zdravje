@@ -4,55 +4,82 @@
     ViewData["Title"] = "Novi zdravnik";
 }
 
-<h1>Dodaj zdravnika</h1>
-
-<h4>Vsi spodnji podatki so zahtevani.</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Ime</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Novi zdravnik <i class="fas fa-user-plus fa-sm"></i></h1>
+                    <p>Skrbno izpolnite in preglejte spodnje podatke </p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label">Priimek</label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-          
-            <div class="form-group">
-                <label asp-for="Street" class="control-label">Naslov</label>
-                <input asp-for="Street" class="form-control" />
-                <span asp-validation-for="Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PostalCode" class="control-label">Poštna številka</label>
-                <input asp-for="PostalCode" class="form-control" />
-                <span asp-validation-for="PostalCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label">Naselje</label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SpecialistCategoryId" class="control-label">Specializacija</label>
-                <select asp-for="SpecialistCategoryId" class="form-control" asp-items="ViewBag.SpecialistCategoryId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Dodaj zdravnika" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-1 ">
+            <div class="card text-center">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Ime</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LastName" class="control-label">Priimek</label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
 
-<div>
-    <a asp-action="Index">Nazaj na seznam</a>
+                            <div class="form-group">
+                                <label asp-for="Street" class="control-label">Naslov (Ustanova)</label>
+                                <input asp-for="Street" class="form-control" />
+                                <span asp-validation-for="Street" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PostalCode" class="control-label">Poštna številka</label>
+                                <input asp-for="PostalCode" class="form-control" />
+                                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="City" class="control-label">Naselje</label>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SpecialistCategoryId" class="control-label">Specializacija</label>
+                                <select asp-for="SpecialistCategoryId" class="form-control" asp-items="ViewBag.SpecialistCategoryId"></select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Dodaj zdravnika" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h5 style="font-weight: 600">Pozor!</h5>
+                    <p style="padding-top: 10px;">
+                        Vsi podatki so obvezni. S klikom na "dodaj zdravnik",
+                        boste zdravnika dodali v sistem eZdravje in izbrano
+                        zdravstveno organizacijo.
+                    </p>
+                    <div>
+                        <a asp-action="Index">Nazaj na seznam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

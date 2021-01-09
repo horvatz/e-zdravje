@@ -4,59 +4,86 @@
     ViewData["Title"] = "Izbriši napotnico";
 }
 
-<h1>Izbriši napotnico</h1>
-
-<h4>@Html.Raw($"Brišete napotnico številka: {Model.Id}")</h4>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Naziv napotnice
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Opis
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            Kategorija (1 - redno, 2 - hitro, 3 - nujno)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            Porabljeno
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUsed)
-        </dd>
-        <dt class="col-sm-2">
-            Zdravnik, ki izdaja napotnico
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
-        </dd>
-        <dt class = "col-sm-2">
-            Pacient
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
-        </dd>
-        <dt class = "col-sm-2">
-            Namenjenu specialistu
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpecialistCategory.Name)
-        </dd class>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Izbriši" class="btn btn-danger" /> |
-        <a asp-action="Index">Nazaj na seznam</a>
-    </form>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Izbris napotnice</h1>
+                    <p>Skrbno preberite napotnico pred izbrisom!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-1">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <h4 style="margin-bottom: 20px" class="text-center">Podatki o napotnici</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">ID napotnice</th>
+                                    <td>@Html.DisplayFor(model => model.Id)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Naziv napotnice</th>
+                                    <td>@Html.DisplayFor(model => model.Name)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Opis</th>
+                                    <td>@Html.DisplayFor(model => model.Description)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Kategorija (1 - redno, 2 - hitro, 3 - nujno)</th>
+                                    <td>@Html.DisplayFor(model => model.Category)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Zdravnik, ki izdaja napotnico</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Pacient</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Namenjeno specialistu</th>
+                                    <td>
+                                        @Html.DisplayFor(model => model.SpecialistCategory.Name)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form asp-action="Delete" class="text-center">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Izbriši" class="btn btn-danger" /> |
+                            <a asp-action="Index">Nazaj na seznam</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h5 style="font-weight: 600">Pozor!</h5>
+                    <p style="padding-top: 10px;">
+                        Porabljene napotnice se <b>ne brišejo</b>, pač pa jih označite
+                        kot "Porabljen" na strani "Uredi napotnico".
+                    </p>
+                    <div>
+                        <a asp-action="Index">Nazaj na seznam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

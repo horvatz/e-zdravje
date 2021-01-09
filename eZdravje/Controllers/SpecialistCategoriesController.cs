@@ -144,7 +144,7 @@ namespace eZdravje.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specialistCategory = await _context.SpecialistCategories.FindAsync(id);
             _context.SpecialistCategories.Remove(specialistCategory);

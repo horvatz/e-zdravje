@@ -193,7 +193,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))",
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
                     SpecialistId = s.SpecialistId
 
                 }).Where(s => s.SpecialistId == doctors[0].Id)
@@ -217,7 +217,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
                 })
                 .ToList();
 

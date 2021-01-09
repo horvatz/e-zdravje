@@ -4,72 +4,96 @@
     ViewData["Title"] = "Vsi recepti";
 }
 
-<h1>Recepti</h1>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Recepti <i class="fas fa-pills fa-sm"></i></h1>
+                    <p>Tukaj so vidni vsi recepti, ki ste jih predpisali pacientom.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Dodaj recept</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                ID recepta
-            </th>
-            <th>
-                Naziv recepta
-            </th>
-            <th>
-                Opis
-            </th>
-            <th>
-                Brez doplačila (zeleni recept)
-            </th>
-            <th>
-                Porabljen
-            </th>
-            <th>
-                Zdravnik
-            </th>
-            <th>
-                Pacient
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Free)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specialist.Name)
-                @Html.DisplayFor(modelItem => item.Specialist.LastName)
-                <br />
-                @Html.DisplayFor(modelItem => item.Specialist.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.Name)
-                @Html.DisplayFor(modelItem => item.Patient.LastName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <p>
+                            <a asp-action="Create">Dodaj recept</a>
+                        </p>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ID recepta
+                                    </th>
+                                    <th>
+                                        Naziv recepta
+                                    </th>
+                                    <th>
+                                        Opis
+                                    </th>
+                                    <th>
+                                        Brez doplačila (zeleni recept)
+                                    </th>
+                                    <th>
+                                        Porabljen
+                                    </th>
+                                    <th>
+                                        Zdravnik
+                                    </th>
+                                    <th>
+                                        Pacient
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Free)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IsUsed)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Specialist.Name)
+                                            @Html.DisplayFor(modelItem => item.Specialist.LastName)
+                                            <br />
+                                            @Html.DisplayFor(modelItem => item.Specialist.Street)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Patient.Name)
+                                            @Html.DisplayFor(modelItem => item.Patient.LastName)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

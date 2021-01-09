@@ -4,57 +4,69 @@
     ViewData["Title"] = "Podrobnosti o receptu";
 }
 
-<h1>O receptu</h1>
-
-<div>
-    <h4>Št recepta: @Html.Raw(Model.Id)</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            ID recepta
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            Naziv recepta
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            Opis
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            Brez doplačila (zeleni recept)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Free)
-        </dd>
-        <dt class="col-sm-2">
-            Porabljen
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsUsed)
-        </dd>
-        <dt class="col-sm-2">
-            Zdravnik, ki predpisuje
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
-        </dd>
-        <dt class="col-sm-2">
-            Pacient
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
-        </dd>
-    </dl>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">O receptu</h1>
+                    <p>Št recepta: @Html.Raw(Model.Id)</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Uredi</a> |
-    <a asp-action="Index">Nazaj na seznam</a>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <h4 style="margin-bottom: 20px" class="text-center">Podatki o receptu</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">ID recepta</th>
+                                    <td>@Html.DisplayFor(model => model.Id)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Naziv recepta</th>
+                                    <td>@Html.DisplayFor(model => model.Name)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Opis</th>
+                                    <td>@Html.DisplayFor(model => model.Description)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Brez doplačila (zeleni recept)</th>
+                                    <td>@Html.DisplayFor(model => model.Free)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Porabljen</th>
+                                    <td>@Html.DisplayFor(model => model.IsUsed)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Zdravnik, ki predpisuje</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Pacient</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            <a asp-action="Edit" asp-route-id="@Model.Id">Uredi</a> |
+                            <a asp-action="Index">Nazaj na seznam</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

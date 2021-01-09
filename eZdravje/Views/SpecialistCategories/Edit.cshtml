@@ -4,36 +4,51 @@
     ViewData["Title"] = "Uredi specializacijo";
 }
 
-<h1>Uredi specializacijo</h1>
-
-<h4>@Html.Raw(Model.Name)</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Uredi specializacijo</h1>
+                    <p>Urejate specializacijo številka: @Html.Raw(Model.Id)</p>
+                    <p>@Html.Raw(Model.Name)</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Shrani" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Nazaj na seznam</a>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="card text-center">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Ime</label>
+                                <input asp-for="Name" required class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label">Opis</label>
+                                <input asp-for="Description" required class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Shrani" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <a asp-action="Index">Nazaj na seznam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

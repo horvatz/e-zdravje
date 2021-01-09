@@ -4,77 +4,100 @@
     ViewData["Title"] = "Vse napotnice";
 }
 
-<h1>Napotnice</h1>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Napotnice <i class="fas fa-file-invoice fa-sm"></i></h1>
+                    <p>Tukaj so vidne vse napotnice, ki ste jih izdali pacientom.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <p>
+                            <a asp-action="Create">Dodaj napotnico</a>
+                        </p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID napotnice</th>
+                                    <th>
+                                        Naziv napotnice
+                                    </th>
+                                    <th>
+                                        Opis
+                                    </th>
+                                    <th>
+                                        Kategorija (1 - redno, 2 - hitro, 3 - nujno)
+                                    </th>
+                                    <th>
+                                        Porabljeno
+                                    </th>
+                                    <th>
+                                        Zdravnik, ki izdaja napotnico
+                                    </th>
+                                    <th>
+                                        Pacient
+                                    </th>
+                                    <th>
+                                        Namenjenu specialistu
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Category)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IsUsed)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Specialist.Name)
+                                            @Html.DisplayFor(modelItem => item.Specialist.LastName)
+                                            <br />
+                                            @Html.DisplayFor(modelItem => item.Specialist.Street)
 
-<p>
-    <a asp-action="Create">Dodaj napotnico</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID napotnice</th>
-            <th>
-                Naziv napotnice
-            </th>
-            <th>
-                Opis
-            </th>
-            <th>
-                Kategorija (1 - redno, 2 - hitro, 3 - nujno)
-            </th>
-            <th>
-                Porabljeno
-            </th>
-            <th>
-                Zdravnik, ki izdaja napotnico
-            </th>
-            <th>
-                Pacient
-            </th>
-            <th>
-                Namenjenu specialistu
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specialist.Name)
-                @Html.DisplayFor(modelItem => item.Specialist.LastName)
-                <br />
-                @Html.DisplayFor(modelItem => item.Specialist.Street)
-
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.Name)
-                @Html.DisplayFor(modelItem => item.Patient.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecialistCategory.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Patient.Name)
+                                            @Html.DisplayFor(modelItem => item.Patient.LastName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SpecialistCategory.Name)
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

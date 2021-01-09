@@ -4,57 +4,83 @@
     ViewData["Title"] = "Nova napotnica";
 }
 
-<h1>Nova napotnica</h1>
-
-<h4>Pred oddajo preverite podatke.</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Naziv napotnice</label>
-                <input asp-for="Name" required class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Nova napotnica <i class="fas fa-file-medical fa-sm"></i></h1>
+                    <p>Napotnice lahko izdajate le svojim pacientom.</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Opis</label>
-                <input asp-for="Description" required class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label">Kategorija (1 - redno, 2 - hitro, 3 - nujno)</label>
-                <input asp-for="Category" required class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsUsed" /> Porabljeno
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="SpecialistId" class="control-label">Zdravnik, ki izdaja recept</label>
-                <select asp-for="SpecialistId" required class ="form-control" asp-items="ViewBag.SpecialistId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label">Pacient</label>
-                <select asp-for="PatientId" required class ="form-control" asp-items="ViewBag.PatientId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SpecialistCategoryId" class="control-label">Namenjeno specialistu</label>
-                <select asp-for="SpecialistCategoryId" required class ="form-control" asp-items="ViewBag.SpecialistCategoryId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Dodaj napotnico" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Nazaj na seznam</a>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-1 ">
+            <div class="card text-center">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Naziv napotnice</label>
+                                <input asp-for="Name" required class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label">Opis</label>
+                                <input asp-for="Description" required class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Category" class="control-label">Kategorija (1 - redno, 2 - hitro, 3 - nujno)</label>
+                                <input asp-for="Category" required class="form-control" />
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsUsed" /> Porabljeno
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SpecialistId" class="control-label">Zdravnik, ki izdaja recept</label>
+                                <select asp-for="SpecialistId" required class="form-control" asp-items="ViewBag.SpecialistId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PatientId" class="control-label">Pacient</label>
+                                <select asp-for="PatientId" required class="form-control" asp-items="ViewBag.PatientId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SpecialistCategoryId" class="control-label">Namenjeno specialistu</label>
+                                <select asp-for="SpecialistCategoryId" required class="form-control" asp-items="ViewBag.SpecialistCategoryId"></select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Dodaj napotnico" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h5 style="font-weight: 600">Opozorilo</h5>
+                    <p style="padding-top: 10px;">
+                        Napotnice lahko dodajate le za <b>svoje paciente</b> v sistemu,
+                        recepte pa za vse paciente.
+                    </p>
+                    <div>
+                        <a asp-action="Index">Nazaj na seznam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

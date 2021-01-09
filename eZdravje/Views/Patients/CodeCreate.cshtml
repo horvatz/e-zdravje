@@ -4,25 +4,40 @@
     ViewData["Title"] = "Nova aktivacijska koda";
 }
 
-<h1>Ustvari novo kodo</h1>
-
-<h4>Koda se uporablja za registracijo na portal eZdravje.</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CodeCreate">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label">Pacient</label>
-                <select asp-for="Id" class="form-control" asp-items="ViewBag.PatientId"></select>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Ustvari novo kodo (pacienti) <i class="fas fa-qrcode fa-sm"></i></h1>
+                    <p>Koda se uporablja za registracijo na portal eZdravje.</p>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Ustvari kodo" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Nazaj na seznam</a>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="card text-center">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <form asp-action="CodeCreate">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Id" class="control-label">Pacient</label>
+                                <select asp-for="Id" class="form-control" asp-items="ViewBag.PatientId"></select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Ustvari kodo" class="btn btn-primary" />
+                            </div>
+                        </form>
+                        <div>
+                            <a asp-action="Index">Nazaj na seznam</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

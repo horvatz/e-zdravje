@@ -4,59 +4,85 @@
     ViewData["Title"] = "Izbriši recept";
 }
 
-<h1>Izbriši recept</h1>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Izbris recepta</h1>
+                    <p>Skrbno preberite recept pred izbrisom!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-1">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <h4 style="margin-bottom: 20px" class="text-center">Podatki o receptu</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">ID recepta</th>
+                                    <td>@Html.DisplayFor(model => model.Id)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Naziv recepta</th>
+                                    <td>@Html.DisplayFor(model => model.Name)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Opis</th>
+                                    <td>@Html.DisplayFor(model => model.Description)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Brez doplačila (zeleni recept)</th>
+                                    <td>@Html.DisplayFor(model => model.Free)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Porabljen</th>
+                                    <td>@Html.DisplayFor(model => model.IsUsed)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Zdravnik, ki predpisuje</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Pacient</th>
+                                    <td>
+                                        @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
 
-<h4>Skrbno preberite recept pred izbrisom!</h4>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            ID številka recepta
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            Naziv
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            Opis
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            Brez doplačila (zeleni recept)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Free)
-        </dd>
-        <dt class="col-sm-2">
-            Porabljen
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsUsed)
-        </dd>
-        <dt class="col-sm-2">
-            Zdravnik, ki predpisuje
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Specialist.Name} {Model.Specialist.LastName} (ID: {Model.SpecialistId}) (Ustanova: {Model.Specialist.Street})")
-        </dd>
-        <dt class="col-sm-2">
-            Pacient
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw($"{Model.Patient.Name} {Model.Patient.LastName} (ID: {Model.PatientId}) (Naslov: {Model.Patient.Street}, {Model.Patient.PostalCode} {Model.Patient.City})")
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Izbriši recept" class="btn btn-danger" /> |
-        <a asp-action="Index">Nazaj na seznam</a>
-    </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form asp-action="Delete" class="text-center">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Izbriši recept" class="btn btn-danger" /> |
+                            <a asp-action="Index">Nazaj na seznam</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h5 style="font-weight: 600">Pozor!</h5>
+                    <p style="padding-top: 10px;">
+                        Porabljeni recepti se <b>ne brišejo</b>, pač pa jih označite
+                        kot "Porabljen" na strani "Uredi recept".
+                    </p>
+                    <div>
+                        <a asp-action="Index">Nazaj na seznam</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -4,38 +4,68 @@
     ViewData["Title"] = "Specializacije";
 }
 
-<h1>Specializacije</h1>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Specializacije <i class="fas fa-certificate fa-sm"></i></h1>
+                    <p>Vse specializacije zdravnikov v sistemu eZdravje.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Dodaj specializacijo</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Naziv specializacije
-            </th>
-            <th>
-                Opis 
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <p>
+                            <a asp-action="Create">Dodaj specializacijo</a>
+                        </p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        ID
+                                    </th>
+                                    <th>
+                                        Naziv specializacije
+                                    </th>
+                                    <th>
+                                        Opis
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

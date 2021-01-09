@@ -4,61 +4,75 @@
     ViewData["Title"] = "Uredi recept";
 }
 
-<h1>Uredi recept</h1>
-
-<h4>Urejate recept številka: @Html.Raw(Model.Id)</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">ID recepta</label>
-                <div>@Html.DisplayFor(model => model.Id)</div>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">Uredi recept</h1>
+                    <p>Urejate recept številka: @Html.Raw(Model.Id)</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Naziv recepta</label>
-                <input asp-for="Name" required class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Opis</label>
-                <input asp-for="Description" required class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Free" /> Brez doplačila (zeleni recept)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsUsed" /> Porabljen
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="SpecialistId" class="control-label">Izbrani zdravnik</label>
-                <select asp-for="SpecialistId" required class="form-control" asp-items="ViewBag.SpecialistId">
-                </select>
-            </div>
-            <div class="from-group">
-                <label asp-for="Patient" class="control-label">Pacient</label>
-                <select asp-for="PatientId" required class="form-control" asp-items="ViewBag.PatientId">
-                </select>
-                <span asp-validation-for="PatientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Shrani" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Nazaj na seznam</a>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="card text-center">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"><b>ID recepta</b></label>
+                                <div><b>@Html.DisplayFor(model => model.Id)</b></div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Naziv recepta</label>
+                                <input asp-for="Name" required class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label">Opis</label>
+                                <input asp-for="Description" required class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Free" /> Brez doplačila (zeleni recept)
+                                </label>
+                            </div>
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsUsed" /> Porabljen
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SpecialistId" class="control-label">Izbrani zdravnik</label>
+                                <select asp-for="SpecialistId" required class="form-control" asp-items="ViewBag.SpecialistId">
+                                </select>
+                            </div>
+                            <div class="from-group">
+                                <label asp-for="Patient" class="control-label">Pacient</label>
+                                <select asp-for="PatientId" required class="form-control" asp-items="ViewBag.PatientId">
+                                </select>
+                                <span asp-validation-for="PatientId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" style="margin-top: 20px">
+                                <input type="submit" value="Shrani" class="btn btn-primary" />
+                            </div>
+                            <div>
+                                <a asp-action="Index">Nazaj na seznam</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

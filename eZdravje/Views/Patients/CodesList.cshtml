@@ -1,55 +1,77 @@
 ﻿@model IEnumerable<eZdravje.Models.ActivationCode>
 
 @{
-    ViewData["Title"] = "CodesList";
+    ViewData["Title"] = "Kode za dostop (pacienti)";
 }
 
-<h1>Kode za dostop</h1>
-<h5>Spodaj so kode za registracijo <b>pacientov</b> na aplikacijo eZdravje</h5>
+<div class="heading">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-white text-bold">
+                <div class="heading-title">
+                    <h1 class="display-5">@ViewData["Title"] <i class="fas fa-qrcode fa-sm"></i></h1>
+                    <p>Spodaj so vse kode, ki so bile izdane pacientom za dostop do storitve eZdravje.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="CodeCreate">Ustvari novo kodo</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Aktivacijska koda
-            </th>
-            <th>
-                Izdano za
-            </th>
-            <th>
-                ID zdravnika
-            </th>
-            <th>
-                Porabljena koda
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsUsed)
-                </td>
-                <td>
-                    <form asp-action="DeactivateCode" asp-route-id="@item.Id">
-                        <button type="submit" class="btn btn-danger">Deaktiviraj</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container">
+    <div class="row" style="margin-top: -130px">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body" style="margin: 10px">
+                    <div class="col-12">
+                        <p>
+                            <a asp-action="CodeCreate">Ustvari novo kodo</a>
+                        </p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Aktivacijska koda
+                                    </th>
+                                    <th>
+                                        Izdano za
+                                    </th>
+                                    <th>
+                                        ID pacienta
+                                    </th>
+                                    <th>
+                                        Porabljena koda
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Code)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Role)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IsUsed)
+                                        </td>
+                                        <td>
+                                            <form asp-action="DeactivateCode" asp-route-id="@item.Id">
+                                                <button type="submit" class="btn btn-danger">Deaktiviraj</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

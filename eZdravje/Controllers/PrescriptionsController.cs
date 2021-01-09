@@ -131,7 +131,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}))"
+                    Patient = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})"
                 })
                 .ToList();
                 ViewBag.PatientId = new SelectList(patients, "Id", "Patient", null);
@@ -140,7 +140,7 @@ namespace eZdravje.Controllers
                 .Select(s => new
                 {
                     Id = s.Id,
-                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id})"
+                    Doc = $"{s.Name} {s.LastName} (ID: {s.Id}) (Ustanova: {s.Street})"
                 })
                 .ToList();
                 ViewData["SpecialistId"] = new SelectList(doctors, "Id", "Doc");
