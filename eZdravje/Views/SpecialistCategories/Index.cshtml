@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<eZdravje.Models.SpecialistCategory>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager;
 
 @{
     ViewData["Title"] = "Specializacije";
@@ -23,9 +26,12 @@
             <div class="card">
                 <div class="card-body" style="margin: 10px">
                     <div class="col-12">
-                        <p>
-                            <a asp-action="Create">Dodaj specializacijo</a>
-                        </p>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        {
+                            <p>
+                                <a asp-action="Create">Dodaj specializacijo</a>
+                            </p>
+                        }
                         <table class="table">
                             <thead>
                                 <tr>
@@ -54,11 +60,14 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Description)
                                     </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
-                                    </td>
+                                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                                    {
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
+                                        </td>
+                                    }
                                 </tr>
                                 }
                             </tbody>

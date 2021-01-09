@@ -115,7 +115,7 @@ namespace eZdravje.Controllers
                     Id = s.Id,
                     Item = $"{s.Name} {s.LastName} (ID: {s.Id}) (Naslov: {s.Street}, {s.PostalCode} {s.City})",
                     UserId = s.UserId
-                }).Where(s => s.UserId == user.Id)
+                })
                 .ToList();
 
                 var doctors = _context.Specialists
