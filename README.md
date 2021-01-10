@@ -10,7 +10,14 @@ Aplikacija eZdravje omogoča lažje poslovanje zdravstvenim ustanovam in jih pop
 
 Nato se uporabniki registrirajo s svojim e-naslovom in aktivacijsko kodo.
 
+
+![Domača stran eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_home.PNG)
+
 ## Kaj omogoča? :computer:
+Aplikacije eZdravje omogoča pregled nad **pacienti**, pregled in izdajanje **napotnic** ter **receptov** in administracijo nad **zdravniki**.
+
+Delovanje aplikacije je odvisno od vrste uporabnika.
+
 Aplikacija ima **3 vrste uporabnikov**:
 * Administrator
 * Zdravnik
@@ -28,6 +35,10 @@ Administrator lahko:
 
 Administratorji so ročno določeni v podatkovni bazi.
 
+Spodaj je prikazan **dodajanje pacienta** v spletni aplikaciji. Vsak pacient ima tudi svojega izbranega osebnega zdravnika:
+
+![Dodajanje pacienta v aplikaciji eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_add_patient.PNG)
+
 ### Zdravnik
 Status zdravnik dobijo vsi uporabniki, ki so dodani kot zdravniki v sistem eZdravje.
 
@@ -35,9 +46,37 @@ Zdravnik lahko vidi **le svoje paciente**, torej samo tiste katerim je izbran os
 
 **Napotnice** lahko izdaja le **svojim** pacientom v sistemu, medtem ko **recepte** lahko izdaja vsem v sistemu eZdravje (če je npr. dežuren zdravnik in pride pacient, ki ni njegov).
 
+
+![Recepti v aplikaciji eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_prescriptions.PNG)
+
 ### Pacient
 Vsak pacient v sistemu dobi uporabniški način "pacient". V tem načinu lahko pregleduje svoje napotnice ter recepte.
 
-## Mobilna aplikacija
+Vsak uporabnik (tudi neprijavljen) lahko vidi zdravnike in specializacije.
+
+![Zdravniki v aplikaciji eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_doctors.PNG)
+
+## Mobilna aplikacija :iphone:
+V sklopu storitve eZdravje sva ustvarila tudi Android aplikacijo. Aplikacija pridobiva podatke preko **REST API-ja**.
+
+Android aplikacija je namenjena zdravnikom. Omogoča **pregledovanje** in **dodajanje pacientov**.
+
+Omogoča tudi prijavo zdravnika v aplikacijo.
+
+<img align="left" src="https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_mobile_login.png">
+
+
+![Prijava v mobilno aplikacijo eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_mobile_patients.png)
 
 ## Podatkovna baza
+Aplikacija ima podatke shranjene v SQL podatkovni bazi. Bazaje gostovana na Microsoft Azure strežnikih.
+
+V podatkovni bazi je 7 tabel, ki so del **ASP Identity** paketa in se uporabljajo za prijavo in registracijo na spletno aplikacijo.
+
+V podatkovni bazi je še **6 tabel**:
+* ***Patients*** - v tej tabeli so shranjeni vsi pacienti, vsak pacient je povezan tudi s svojim zdravnikom preko polja "SpecialistId"
+* ***Prescriptions*** - v tej tabeli so shranjeni recepti ki so vezani na pacienta in jih je predpisal zdravnik
+* ***Referrals*** - shranjene napotnice, ki so jih predpisali zdravniki za določenega pacienta
+* ***Specialists*** - shranjeni vsi zdravniki, vsak zdravnik je tudi specialist iz področja definiranega v tablei "SpecialistCategories"
+* ***SpecialistCategories*** - specializacije zdravnikov, vsak zdravnik ima eno
+* ***ActivationCodes*** - aktivacijske kode za registracijo uporabnikov na storitev eZdraje
