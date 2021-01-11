@@ -11,7 +11,7 @@ using eZdravje.Filters;
 
 namespace eZdravje.Controllers_Api
 {
-    [Route("api/v1/Recepti")]
+    [Route("api/v1/Pacienti")]
     [ApiController]
     [ApiKeyAuth]
     public class PatientApiController : ControllerBase
