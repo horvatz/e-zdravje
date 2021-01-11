@@ -1,6 +1,8 @@
 # eZdravje :hospital:
 Aplikacija eZdravje omogoča lažje poslovanje zdravstvenim ustanovam in jih popolnoma digitalizira. Zdravstvenim delavcem omogoča vpisovanje pacientov, izdajanje receptov ter napotnic. Pacientom pa omogoča pregledovanje svoje kartoteke preko spletne aplikacije.
 
+Link do aplikacije na spletu: https://ezdravje.azurewebsites.net/
+
 ## Avtorja :construction_worker:
 **Žan Horvat (63190120)** - *zadolžen za spletno aplikacijo ter podatkovno bazo* <br>
 **Žan Mencigar (63190187)** - *zadolžen za Android odjemalec in API vmesnik* <br>
