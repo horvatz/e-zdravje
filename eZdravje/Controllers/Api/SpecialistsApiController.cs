@@ -14,23 +14,23 @@ namespace eZdravje.Controllers_Api
     [Route("api/v1/Zdravniki")]
     [ApiController]
     [ApiKeyAuth]
-    public class SpecialistApiController : ControllerBase
+    public class SpecialistsApiController : ControllerBase
     {
         private readonly PatientContext _context;
 
-        public SpecialistApiController(PatientContext context)
+        public SpecialistsApiController(PatientContext context)
         {
             _context = context;
         }
 
-        // GET: api/SpecialistApi
+        // GET: api/SpecialistsApi
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Specialist>>> GetSpecialists()
         {
             return await _context.Specialists.ToListAsync();
         }
 
-        // GET: api/SpecialistApi/5
+        // GET: api/SpecialistsApi/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Specialist>> GetSpecialist(int id)
         {
@@ -44,7 +44,7 @@ namespace eZdravje.Controllers_Api
             return specialist;
         }
 
-        // PUT: api/SpecialistApi/5
+        // PUT: api/SpecialistsApi/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -76,7 +76,7 @@ namespace eZdravje.Controllers_Api
             return NoContent();
         }
 
-        // POST: api/SpecialistApi
+        // POST: api/SpecialistsApi
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -88,7 +88,7 @@ namespace eZdravje.Controllers_Api
             return CreatedAtAction("GetSpecialist", new { id = specialist.Id }, specialist);
         }
 
-        // DELETE: api/SpecialistApi/5
+        // DELETE: api/SpecialistsApi/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Specialist>> DeleteSpecialist(int id)
         {
