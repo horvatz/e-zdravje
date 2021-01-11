@@ -47,7 +47,7 @@ namespace eZdravje.Controllers_Api
         // PUT: api/SpecialistsApi/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> PutSpecialist(int id, Specialist specialist)
         {
             if (id != specialist.Id)
@@ -74,22 +74,22 @@ namespace eZdravje.Controllers_Api
             }
 
             return NoContent();
-        }
+        }*/
 
         // POST: api/SpecialistsApi
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        /*[HttpPost]
         public async Task<ActionResult<Specialist>> PostSpecialist(Specialist specialist)
         {
             _context.Specialists.Add(specialist);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSpecialist", new { id = specialist.Id }, specialist);
-        }
+        }*/
 
         // DELETE: api/SpecialistsApi/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<ActionResult<Specialist>> DeleteSpecialist(int id)
         {
             var specialist = await _context.Specialists.FindAsync(id);
@@ -102,7 +102,7 @@ namespace eZdravje.Controllers_Api
             await _context.SaveChangesAsync();
 
             return specialist;
-        }
+        }*/
 
         private bool SpecialistExists(int id)
         {
