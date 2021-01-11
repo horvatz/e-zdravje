@@ -25,7 +25,7 @@ Aplikacija ima **3 vrste uporabnikov**:
 
 Spodaj so opisane naloge, ki jih lahko izvaja posamezen uporabnik.
 
-### Administrator
+### Administrator :lock:
 Administrator vidi **vse paciente** v sistemu eZdravje.
 
 Administrator lahko:
@@ -39,7 +39,7 @@ Spodaj je prikazan **dodajanje pacienta** v spletni aplikaciji. Vsak pacient ima
 
 ![Dodajanje pacienta v aplikaciji eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_add_patient.PNG)
 
-### Zdravnik
+### Zdravnik :syringe:
 Status zdravnik dobijo vsi uporabniki, ki so dodani kot zdravniki v sistem eZdravje.
 
 Zdravnik lahko vidi **le svoje paciente**, torej samo tiste katerim je izbran osebni zdravnik.
@@ -49,7 +49,7 @@ Zdravnik lahko vidi **le svoje paciente**, torej samo tiste katerim je izbran os
 
 ![Recepti v aplikaciji eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_prescriptions.PNG)
 
-### Pacient
+### Pacient :man:
 Vsak pacient v sistemu dobi uporabniški način "pacient". V tem načinu lahko pregleduje svoje napotnice ter recepte.
 
 Vsak uporabnik (tudi neprijavljen) lahko vidi zdravnike in specializacije.
@@ -68,7 +68,7 @@ Omogoča tudi prijavo zdravnika v aplikacijo.
 
 ![Prijava v mobilno aplikacijo eZdravje](https://github.com/horvatz/eZdravje/blob/master/img/eZdravje_mobile_patients.png)
 
-## Podatkovna baza
+## Podatkovna baza :file_folder:
 Aplikacija ima podatke shranjene v SQL podatkovni bazi. Bazaje gostovana na Microsoft Azure strežnikih.
 
 V podatkovni bazi je 7 tabel, ki so del **ASP Identity** paketa in se uporabljajo za prijavo in registracijo na spletno aplikacijo.
@@ -80,3 +80,8 @@ V podatkovni bazi je še **6 tabel**:
 * ***Specialists*** - shranjeni vsi zdravniki, vsak zdravnik je tudi specialist iz področja definiranega v tablei "SpecialistCategories"
 * ***SpecialistCategories*** - specializacije zdravnikov, vsak zdravnik ima eno
 * ***ActivationCodes*** - aktivacijske kode za registracijo uporabnikov na storitev eZdraje
+
+Spodaj je še **slika podatkovnega modela**: (Iz paketa Identity je vključena le tabela AspNetUsers)
+
+
+![Slika podatkovnega modela](https://github.com/horvatz/eZdravje/blob/master/img/Database_diagram.PNG)
